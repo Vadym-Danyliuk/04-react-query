@@ -5,9 +5,10 @@ import css from './MovieCard.module.css';
 
 interface MovieCardProps {
   movie: Movie;
+  onViewDetails: (movie: Movie) => void;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, onViewDetails }) => {
   const { title, overview, poster_path, release_date, vote_average } = movie;
   
   const releaseYear = release_date ? new Date(release_date).getFullYear() : 'Невідомо';
@@ -27,6 +28,15 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             <span>Немає зображення</span>
           </div>
         )}
+        <div className={css.overlay}>
+          <button 
+            className={css.viewButton}
+            onClick={() => onViewDetails(movie)}
+            aria-label={`Переглянути фільм ${title}`}
+          >
+            ▶️ Дивитися
+          </button>
+        </div>
       </div>
       
       <div className={css.content}>

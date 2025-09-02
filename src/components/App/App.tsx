@@ -1,10 +1,12 @@
+
 import React, { useState } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import ReactPaginate from 'react-paginate';
 import { searchMovies } from '../../services/tmdb';
-import { MovieSearchResponse } from '../../types/movie';
+import { MovieSearchResponse, Movie } from '../../types/movie';
 import SearchForm from '../SearchForm/SearchForm';
 import MovieList from '../MovieList/MovieList';
+import MovieModal from '../MovieModal/MovieModal';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import css from './App.module.css';
@@ -13,6 +15,7 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentQuery, setCurrentQuery] = useState<string>('');
   const [page, setPage] = useState<number>(1);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const {
     data: movieData,
@@ -38,6 +41,14 @@ const App: React.FC = () => {
 
   const handleRetry = () => {
     refetch();
+  };
+
+  const handleMovieSelect = (movie: Movie) => {
+    setSelectedMovie(movie);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedMovie(null);
   };
 
   const movies = movieData?.results || [];
@@ -79,7 +90,10 @@ const App: React.FC = () => {
                 </p>
               </div>
               
-              <MovieList movies={movies} />
+              <MovieList 
+                movies={movies} 
+                onMovieSelect={handleMovieSelect}
+              />
               
               {shouldShowPagination && (
                 <ReactPaginate
@@ -104,6 +118,15 @@ const App: React.FC = () => {
           )}
         </div>
       </main>
+
+     
+      {selectedMovie && (
+        <MovieModal
+          movie={selectedMovie}
+          isOpen={!!selectedMovie}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
