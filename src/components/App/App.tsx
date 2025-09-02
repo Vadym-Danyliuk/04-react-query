@@ -4,10 +4,10 @@ import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import ReactPaginate from 'react-paginate';
 import { searchMovies } from '../../services/tmdb';
 import { MovieSearchResponse, Movie } from '../../types/movie';
-import SearchForm from '../SearchForm/SearchForm';
-import MovieList from '../MovieList/MovieList';
+import SearchForm from '../SearchBar/SearchForm';
+import MovieList from '../MovieGrid/MovieList';
 import MovieModal from '../MovieModal/MovieModal';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import LoadingSpinner from '../Loader/LoadingSpinner';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import css from './App.module.css';
 
