@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import ReactPaginate from 'react-paginate';
-import { searchMovies } from '../../services/tmdb';
+import { searchMovies } from '../../services/movieService';
 import { MovieSearchResponse, Movie } from '../../types/movie';
 import SearchForm from '../SearchBar/SearchForm';
 import MovieList from '../MovieGrid/MovieList';

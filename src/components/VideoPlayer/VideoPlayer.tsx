@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getMovieVideos } from '../../services/tmdb';
+import { getMovieVideos } from '../../services/movieService';
 import { MovieVideo } from '../../types/movie';
 import css from './VideoPlayer.module.css';
 

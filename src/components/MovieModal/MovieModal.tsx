@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Movie } from '../../types/movie';
-import { IMAGE_BASE_URL } from '../../services/tmdb';
+import { IMAGE_BASE_URL } from '../../services/movieService';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import css from './MovieModal.module.css';
 
