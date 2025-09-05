@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Movie } from '../../types/movie';
 import { IMAGE_BASE_URL } from '../../services/movieService';
@@ -11,7 +11,6 @@ interface MovieModalProps {
 }
 
 const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
-
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -21,7 +20,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden'; 
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
@@ -36,7 +35,6 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
   const releaseYear = release_date ? new Date(release_date).getFullYear() : 'Невідомо';
   const rating = vote_average ? vote_average.toFixed(1) : 'N/A';
 
- 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -79,11 +77,23 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
             </div>
 
             <div className={css.actions}>
-              <button className={css.actionButton} onClick={() => window.open(`https://www.themoviedb.org/movie/${movie.id}`, '_blank')}>
+              <button 
+                className={css.actionButton} 
+                onClick={() => window.open(`https://www.themoviedb.org/movie/${movie.id}`, '_blank')}
+              >
                 📖 Більше на TMDB
               </button>
-              <button className={css.actionButton} onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(title)} watch online`, '_blank')}>
+              <button 
+                className={css.actionButton} 
+                onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(title)} watch online`, '_blank')}
+              >
                 🔍 Знайти для перегляду
+              </button>
+              <button 
+                className={css.actionButton} 
+                onClick={() => window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(title)} trailer`, '_blank')}
+              >
+                🎬 Дивитися трейлер
               </button>
             </div>
           </div>
@@ -92,7 +102,6 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
     </div>
   );
 
- 
   return createPortal(modalContent, document.body);
 };
 
