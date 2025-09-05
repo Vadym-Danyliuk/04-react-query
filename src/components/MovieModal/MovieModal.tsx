@@ -36,7 +36,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
   const releaseYear = release_date ? new Date(release_date).getFullYear() : 'Невідомо';
   const rating = vote_average ? vote_average.toFixed(1) : 'N/A';
 
-
+ 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -92,7 +92,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
     </div>
   );
 
-
+ 
   return createPortal(modalContent, document.body);
 };
 
