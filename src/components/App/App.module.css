@@ -1,22 +1,31 @@
 .app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-image: url(/img/baner1.png);
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 1920px;
+  background-color: #040f1a;
 }
 
 .header {
-  background: rgba(255, 255, 255, 0.1);
+  /* background: rgba(255, 255, 255, 0.1); */
+  display: contents;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.062);
   padding: 24px 0;
   position: sticky;
   top: 0;
   z-index: 100;
+
 }
 
 .container {
+  border-radius: 4px;
+  border-radius: 1px solid rgba(255, 255, 255, 0.3);  
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 24px 16px;
+  background-color: #dfcbcb4f;
 }
 
 .title {

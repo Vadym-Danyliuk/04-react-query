@@ -1,15 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import ReactPaginate from 'react-paginate';
 import { searchMovies } from '../../services/movieService';
-import { MovieSearchResponse, Movie } from '../../types/movie';
-import SearchForm from '../SearchBar/SearchForm';
-import MovieList from '../MovieGrid/MovieList';
+import { Movie } from '../../types/movie';
+import SearchBar from '../SearchBar/SearchBar';
+import MovieGrid from '../MovieGrid/MovieGrid';
 import MovieModal from '../MovieModal/MovieModal';
-import LoadingSpinner from '../Loader/LoadingSpinner';
+import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import css from './App.module.css';
+
+interface MovieSearchResponse {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+}
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -20,6 +27,10 @@ const App: React.FC = () => {
   const {
     data: movieData,
     isLoading,
+    isFetching,
+    isPending,
+    isError,
+    isSuccess,
     error,
     refetch,
   } = useQuery<MovieSearchResponse, Error>({
@@ -28,6 +39,32 @@ const App: React.FC = () => {
     enabled: !!currentQuery,
     placeholderData: keepPreviousData,
   });
+
+ 
+  useEffect(() => {
+    if (isSuccess && movieData && movieData.results.length === 0) {
+    
+      const toast = document.createElement('div');
+      toast.textContent = 'Не знайдено фільмів за вашим запитом';
+      toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #f59e0b;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      `;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 3000);
+    }
+  }, [isSuccess, movieData]);
 
   const handleSearch = (query: string) => {
     setCurrentQuery(query);
@@ -55,12 +92,14 @@ const App: React.FC = () => {
   const totalPages = movieData?.total_pages || 0;
   const shouldShowPagination = totalPages > 1;
 
+  const showLoader = isPending || (isFetching && movies.length === 0);
+
   return (
     <div className={css.app}>
       <header className={css.header}>
         <div className={css.container}>
           <h1 className={css.title}>🎬 Пошук фільмів</h1>
-          <SearchForm
+          <SearchBar
             onSubmit={handleSearch}
             query={searchQuery}
             onQueryChange={setSearchQuery}
@@ -70,16 +109,16 @@ const App: React.FC = () => {
 
       <main className={css.main}>
         <div className={css.container}>
-          {isLoading && <LoadingSpinner />}
+          {showLoader && <Loader />}
           
-          {error && !isLoading && (
+          {isError && !showLoader && (
             <ErrorMessage
-              message="Не вдалося завантажити фільми. Перевірте з'єднання з інтернетом."
+              message={error?.message || "Не вдалося завантажити фільми. Перевірте з'єднання з інтернетом."}
               onRetry={handleRetry}
             />
           )}
 
-          {!isLoading && !error && currentQuery && (
+          {isSuccess && !showLoader && currentQuery && (
             <>
               <div className={css.resultsInfo}>
                 <p>
@@ -90,7 +129,7 @@ const App: React.FC = () => {
                 </p>
               </div>
               
-              <MovieList 
+              <MovieGrid 
                 movies={movies} 
                 onMovieSelect={handleMovieSelect}
               />
@@ -111,7 +150,7 @@ const App: React.FC = () => {
             </>
           )}
 
-          {!currentQuery && !isLoading && (
+          {!currentQuery && !showLoader && (
             <div className={css.welcome}>
               <p>Введіть назву фільму для пошуку</p>
             </div>
@@ -119,7 +158,7 @@ const App: React.FC = () => {
         </div>
       </main>
 
-     
+  
       {selectedMovie && (
         <MovieModal
           movie={selectedMovie}
