@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import ReactPaginate from 'react-paginate';
@@ -7,10 +6,12 @@ import { Movie } from '../../types/movie';
 import SearchBar from '../SearchBar/SearchBar';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import MovieModal from '../MovieModal/MovieModal';
+import Footer from '../Footer/Footer';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import css from './App.module.css';
 
+// Локальний інтерфейс для відповіді (оскільки movieService повертає дані)
 interface MovieSearchResponse {
   page: number;
   results: Movie[];
@@ -26,7 +27,6 @@ const App: React.FC = () => {
 
   const {
     data: movieData,
-    isLoading,
     isFetching,
     isPending,
     isError,
@@ -40,10 +40,10 @@ const App: React.FC = () => {
     placeholderData: keepPreviousData,
   });
 
- 
+  // Toast нотифікація при успішному запиті без результатів
   useEffect(() => {
     if (isSuccess && movieData && movieData.results.length === 0) {
-    
+      // Простий toast (можна замінити на react-hot-toast або іншу бібліотеку)
       const toast = document.createElement('div');
       toast.textContent = 'Не знайдено фільмів за вашим запитом';
       toast.style.cssText = `
@@ -92,6 +92,7 @@ const App: React.FC = () => {
   const totalPages = movieData?.total_pages || 0;
   const shouldShowPagination = totalPages > 1;
 
+  // Використовуємо isPending для початкового завантаження, isFetching для наступних
   const showLoader = isPending || (isFetching && movies.length === 0);
 
   return (
@@ -158,7 +159,9 @@ const App: React.FC = () => {
         </div>
       </main>
 
-  
+      <Footer />
+
+      {/* Модальне вікно */}
       {selectedMovie && (
         <MovieModal
           movie={selectedMovie}

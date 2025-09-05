@@ -11,7 +11,7 @@ interface MovieModalProps {
 }
 
 const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
-  // Закрити модалку по Escape
+
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -21,7 +21,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden'; // Заблокувати скрол
+      document.body.style.overflow = 'hidden'; 
     }
 
     return () => {
@@ -36,7 +36,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
   const releaseYear = release_date ? new Date(release_date).getFullYear() : 'Невідомо';
   const rating = vote_average ? vote_average.toFixed(1) : 'N/A';
 
-  // Закрити по кліку на backdrop
+
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -92,7 +92,7 @@ const MovieModal: React.FC<MovieModalProps> = ({ movie, isOpen, onClose }) => {
     </div>
   );
 
-  // Рендер через Portal
+
   return createPortal(modalContent, document.body);
 };
 

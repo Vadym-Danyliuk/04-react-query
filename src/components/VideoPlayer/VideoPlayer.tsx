@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getMovieVideos } from '../../services/movieService';
-import { MovieVideo } from '../../types/movie';
+import { getMovieVideos, MovieVideo } from '../../services/movieService';
 import css from './VideoPlayer.module.css';
 
 interface VideoPlayerProps {
@@ -25,10 +24,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ movieId, movieTitle }) => {
         video => video.type === 'Trailer' && video.official && video.site === 'YouTube'
       );
       
+
       const anyTrailer = videos.find(
         video => video.type === 'Trailer' && video.site === 'YouTube'
       );
-      
+
       const firstYouTubeVideo = videos.find(video => video.site === 'YouTube');
       
       const selectedVideo = officialTrailer || anyTrailer || firstYouTubeVideo;
